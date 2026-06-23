@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JF STORE | Streetwear Con Identidad</title>
+    <meta name="description" content="JF STORE - El estilo no se compra, se representa. Marca de ropa urbana con identidad.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --grey-900: #111111;
+            --grey-800: #1a1a1a;
+            --grey-700: #2a2a2a;
+            --grey-600: #3a3a3a;
+            --grey-500: #5a5a5a;
+            --grey-400: #8a8a8a;
+            --grey-300: #aaaaaa;
+            --grey-200: #cccccc;
+            --silver: #c0c0c0;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-alt: 'Montserrat', sans-serif;
+            --font-marker: 'Permanent Marker', cursive;
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--black);
+            color: var(--grey-200);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: default;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--silver);
+            color: var(--black);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--grey-700);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--grey-500);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            line-height: 1;
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        p {
+            font-family: var(--font-body);
+            font-weight: 300;
+            color: var(--grey-300);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 5vw, 4rem);
+        }
+
+        .section {
+            padding: clamp(3rem, 8vw, 6rem) 0;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--black);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-text {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 15px;
+            color: var(--white);
+            animation: loaderPulse 1.2s ease-in-out infinite;
+        }
+        @keyframes loaderPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.98); }
+        }
+
+        /* Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--grey-500);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, background 0.15s ease, border-color 0.15s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor.active {
+            transform: scale(2.5);
+            background: var(--silver);
+            border-color: var(--silver);
+        }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.8rem 0;
+            transition: all 0.4s var(--ease-smooth);
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 5vw, 4rem);
+        }
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 6px;
+            color: var(--white);
+            font-weight: 400;
+        }
+        .logo span {
+            color: var(--silver);
+        }
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey-400);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--silver);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s var(--ease-smooth);
+        }
+        .nav-links a:hover {
+            color: var(--white);
+        }
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .btn-nav {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--grey-600);
+            color: var(--white);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+        }
+        .btn-nav:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: 
+                radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(255,255,255,0.02) 0%, transparent 50%),
+                var(--black);
+            overflow: hidden;
+            padding: 8rem 0 4rem;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+        }
+        .hero-bg-text {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 35vw;
+            color: rgba(255,255,255,0.015);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: 30px;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+        .hero-logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2.5rem;
+        }
+        .hero-logo {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 11rem);
+            letter-spacing: 15px;
+            color: var(--white);
+            line-height: 0.9;
+            position: relative;
+            display: block;
+            text-shadow: 
+                0 0 40px rgba(255,255,255,0.08),
+                5px 5px 0px rgba(0,0,0,0.9),
+                -3px -3px 0px rgba(255,255,255,0.03);
+            transform: skewX(-1.5deg) rotate(-0.5deg);
+            -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+        }
+        .hero-logo::selection {
+            background: transparent;
+        }
+        .hero-phrase {
+            font-family: var(--font-marker);
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            color: var(--grey-200);
+            position: relative;
+            display: inline-block;
+            transform: rotate(-1deg);
+        }
+        .hero-phrase::before,
+        .hero-phrase::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--grey-600));
+        }
+        .hero-phrase::before {
+            right: calc(100% + 20px);
+            background: linear-gradient(90deg, transparent, var(--grey-600));
+        }
+        .hero-phrase::after {
+            left: calc(100% + 20px);
+            background: linear-gradient(270deg, transparent, var(--grey-600));
+        }
+        .hero-text {
+            font-family: var(--font-body);
+            font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: var(--grey-400);
+            line-height: 2;
+            font-weight: 300;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 1.2rem 3rem;
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--grey-600);
+            cursor: pointer;
+            transition: all 0.4s var(--ease-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-primary:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.08);
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-arrow {
+            transition: transform 0.3s ease;
+        }
+        .btn-primary:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: var(--grey-700);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            animation: scrollAnim 2s ease-in-out infinite;
+        }
+        @keyframes scrollAnim {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        .scroll-text {
+            font-family: var(--font-body);
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey-500);
+        }
+
+        /* ========== ABOUT ========== */
+        .about {
+            background: var(--black);
+            position: relative;
+        }
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--grey-700), transparent);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: stretch;
+        }
+        .about-image-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .about-image-container {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+            background: var(--grey-900);
+        }
+        .about-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255,255,255,0.08);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .about-image-container::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: -15px;
+            bottom: -15px;
+            border: 1px solid rgba(255,255,255,0.04);
+            z-index: 0;
+        }
+        .about-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.1) brightness(0.85);
+            transition: all 0.8s var(--ease-out-expo);
+            position: relative;
+            z-index: 1;
+        }
+        .about-image-container:hover .about-image {
+            filter: grayscale(0%) contrast(1.05) brightness(0.95);
+            transform: scale(1.03);
+        }
+        .about-badge {
+            position: absolute;
+            bottom: 25px;
+            left: -15px;
+            background: var(--white);
+            color: var(--black);
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            z-index: 3;
+            transform: rotate(-2deg);
+        }
+        .about-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .about-label {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--grey-500);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .about-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--grey-600);
+        }
+        .about-title {
+            font-family: var(--font-marker);
+            font-size: clamp(2rem, 3vw, 3rem);
+            color: var(--white);
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: none;
+            transform: rotate(-0.5deg);
+        }
+        .about-title span {
+            color: var(--grey-500);
+            display: block;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-body);
+            font-weight: 400;
+            text-transform: uppercase;
+            transform: rotate(0deg);
+        }
+        .about-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--grey-600), transparent);
+            margin: 1.5rem 0;
+            opacity: 0.5;
+        }
+        .about-text {
+            font-family: var(--font-body);
+            font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+            line-height: 1.9;
+            color: var(--grey-300);
+            margin-bottom: 1.2rem;
+            font-weight: 300;
+        }
+        .about-text:last-of-type {
+            margin-bottom: 0;
+        }
+        .about-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .about-footer-line {
+            width: 30px;
+            height: 1px;
+            background: var(--grey-600);
+        }
+        .about-footer-text {
+            font-family: var(--font-marker);
+            font-size: 1.1rem;
+            color: var(--grey-400);
+            transform: rotate(-1deg);
+        }
+
+        /* ========== SOCIAL ========== */
+        .social {
+            background: var(--grey-900);
+            position: relative;
+            overflow: hidden;
+        }
+        .social::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.01) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--grey-500);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--grey-700);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            letter-spacing: 10px;
+            color: var(--white);
+        }
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .social-card {
+            position: relative;
+            padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1rem, 1.5vw, 1.5rem);
+            text-align: center;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.5s var(--ease-smooth);
+            overflow: hidden;
+        }
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            transition: left 0.7s ease;
+        }
+        .social-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        .social-card:hover::before {
+            left: 100%;
+        }
+        .social-icon {
+            font-size: 3rem;
+            color: var(--grey-400);
+            transition: all 0.4s var(--ease-bounce);
+            line-height: 1;
+        }
+        .social-card:hover .social-icon {
+            transform: translateY(-5px) scale(1.15);
+        }
+        .social-card:nth-child(1):hover .social-icon { color: #E1306C; }
+        .social-card:nth-child(2):hover .social-icon { color: #00f2ea; }
+        .social-card:nth-child(3):hover .social-icon { color: #1877F2; }
+        .social-card:nth-child(4):hover .social-icon { color: #25D366; }
+        .social-name {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--grey-400);
+            margin-bottom: 0.3rem;
+            transition: color 0.3s ease;
+        }
+        .social-card:hover .social-name {
+            color: var(--white);
+        }
+        .social-handle {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--grey-500);
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+        .social-card:hover .social-handle {
+            color: var(--grey-300);
+        }
+
+        /* ========== FINAL CTA ========== */
+        .final-cta {
+            position: relative;
+            padding: clamp(4rem, 10vw, 8rem) 0;
+            background: var(--black);
+            text-align: center;
+            overflow: hidden;
+        }
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .final-content {
+            position: relative;
+            z-index: 2;
+        }
+        .final-quote {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 5rem);
+            letter-spacing: 6px;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 2rem;
+        }
+        .final-quote span {
+            display: block;
+            color: var(--silver);
+            font-size: 0.4em;
+            letter-spacing: 8px;
+            margin-top: 1rem;
+            font-family: var(--font-body);
+            font-weight: 300;
+        }
+        .final-divider {
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, var(--grey-600), transparent);
+            margin: 0 auto 2.5rem;
+        }
+        .final-brand {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--grey-500);
+        }
+        .final-brand strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--grey-900);
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--grey-500);
+        }
+        .footer-text {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--grey-600);
+            letter-spacing: 2px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 968px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .about-image-container {
+                aspect-ratio: 16/10;
+                max-height: 300px;
+            }
+            .about-content {
+                justify-content: flex-start;
+            }
+            .social-links {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .btn-nav {
+                display: none;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+        }
+        @media (max-width: 600px) {
+            .social-links {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .hero-phrase::before,
+            .hero-phrase::after {
+                display: none;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .about-badge {
+                left: 10px;
+                bottom: 10px;
+                transform: rotate(0deg);
+            }
+            .about-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .social-links {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .hero-logo {
+                letter-spacing: 8px;
+            }
+        }
+
+        /* Mobile nav */
+        @media (max-width: 968px) {
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0,0,0,0.98);
+                backdrop-filter: blur(20px);
+                padding: 2rem;
+                gap: 2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-text">JF STORE</div>
+    </div>
+
+    <!-- Custom Cursor (desktop only) -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">JF<span>STORE</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#social">Social</a></li>
+            </ul>
+            <a href="#social" class="btn-nav">Síguenos</a>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-text">JF</div>
+        <div class="hero-content">
+            <div class="hero-logo-wrapper reveal">
+                <h1 class="hero-logo">JF STORE</h1>
+            </div>
+            <p class="hero-phrase reveal">"Haz que tu historia deje huella, y que Dios guíe cada paso."</p>
+            <p class="hero-text reveal">
+                En JF STORE creemos que la verdadera diferencia no está en lo que tienes, sino en la mentalidad con la que enfrentas la vida. Nacimos para inspirar a quienes trabajan por sus sueños, a quienes se levantan después de cada caída y a quienes entienden que el éxito es el resultado de la disciplina, la perseverancia y la fe. Nuestra esencia va más allá de la moda; representa una actitud, una visión y un compromiso con el crecimiento personal. Porque cada persona tiene una historia que contar y una huella que dejar. Viste con seguridad, actúa con determinación y demuestra al mundo de qué estás hecho. JF STORE: donde la confianza se convierte en identidad.
+            </p>
+            <a href="#social" class="btn-primary reveal">
+                Síguenos
+                <span class="btn-arrow">→</span>
+            </a>
+        </div>
+        <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+            <div class="scroll-line"></div>
+            <span class="scroll-text">Scroll</span>
+        </div>
+    </section>
+
+    <!-- Nuestra Esencia -->
+    <section class="about section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper reveal">
+                    <div class="about-image-container">
+                        <img src="image.png" alt="JF STORE Urban Culture" class="about-image">
+                        <div class="about-badge">Auténtico</div>
+                    </div>
+                </div>
+                <div class="about-content reveal" style="transition-delay: 0.15s;">
+                    <div class="about-label">// Quiénes Somos</div>
+                    <h2 class="about-title">
+                        <span>Nuestra</span>
+                        Esencia
+                    </h2>
+                    <div class="about-divider"></div>
+                    <p class="about-text">
+                        JF STORE es más que una tienda de ropa urbana; es un espacio para quienes entienden que vestir bien es una forma de expresarse. Ofrecemos prendas de alta calidad, prendas con personalidad y un estilo que combina elegancia, calle y autenticidad. Cada prenda está pensada para quienes buscan destacar, proyectar confianza y llevar su propio flow a otro nivel.
+                    </p>
+                    <p class="about-text">
+                        En JF STORE creemos que la ropa no solo complementa tu imagen, sino que refleja tu esencia, tu mentalidad y la manera en que decides representarte ante el mundo. Por eso seleccionamos cuidadosamente cada prenda, priorizando materiales de excelente calidad, comodidad, durabilidad y acabados que marcan la diferencia. Nuestro objetivo es brindar a nuestros clientes una experiencia única, donde encuentren prendas versátiles, modernas y con identidad propia, capaces de adaptarse a cualquier ocasión sin perder el toque urbano que nos caracteriza.
+                    </p>
+                    <p class="about-text">
+                        Inspirados en la cultura de la calle, el lujo contemporáneo y la autenticidad de quienes construyen su propio camino, buscamos crear una comunidad de personas que valoran el estilo, la presencia y la confianza en sí mismas. En JF STORE no seguimos tendencias pasajeras; apostamos por un estilo que trasciende, que impone presencia y que permite a cada persona vestir con seguridad, actitud y distinción.
+                    </p>
+                    <p class="about-text">
+                        JF STORE representa calidad, exclusividad y personalidad. Es para quienes entienden que el verdadero flow no está en llevar cualquier prenda, sino en vestir con intención, cuidar cada detalle y convertir cada outfit en una declaración de identidad, respeto y estilo propio.
+                    </p>
+                    <div class="about-footer">
+                        <div class="about-footer-line"></div>
+                        <span class="about-footer-text">— JF STORE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Redes Sociales -->
+    <section class="social section" id="social">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-label">// Conecta</div>
+                <h2 class="section-title">Conecta con JF STORE</h2>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-card reveal" style="transition-delay: 0.1s;" aria-label="Instagram">
+                    <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="social-name">Instagram</div>
+                    <div class="social-handle">@jfstore</div>
+                </a>
+                <a href="#" class="social-card reveal" style="transition-delay: 0.2s;" aria-label="TikTok">
+                    <div class="social-icon"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="social-name">TikTok</div>
+                    <div class="social-handle">@jfstore</div>
+                </a>
+                <a href="#" class="social-card reveal" style="transition-delay: 0.3s;" aria-label="Facebook">
+                    <div class="social-icon"><i class="fa-brands fa-facebook-f"></i></div>
+                    <div class="social-name">Facebook</div>
+                    <div class="social-handle">JF STORE</div>
+                </a>
+                <a href="#" class="social-card reveal" style="transition-delay: 0.4s;" aria-label="WhatsApp">
+                    <div class="social-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="social-name">WhatsApp</div>
+                    <div class="social-handle">+57 XXX XXX XXXX</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Frase Final -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="final-content reveal">
+                <h2 class="final-quote">
+                    No seguimos tendencias.
+                    <span>Creamos presencia.</span>
+                </h2>
+                <div class="final-divider"></div>
+                <p class="final-brand"><strong>JF STORE</strong> • Streetwear con identidad</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <span class="footer-logo">JF</span>
+            <span class="footer-text">© 2026 Todos los derechos reservados</span>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Loader
+            const loader = document.getElementById('loader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 800);
+            });
+
+            // Cursor (solo desktop)
+            const cursor = document.getElementById('cursor');
+            if (window.matchMedia('(pointer: fine)').matches) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let cursorX = 0;
+                let cursorY = 0;
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                function animateCursor() {
+                    cursorX += (mouseX - cursorX) * 0.2;
+                    cursorY += (mouseY - cursorY) * 0.2;
+                    cursor.style.left = cursorX - 10 + 'px';
+                    cursor.style.top = cursorY - 10 + 'px';
+                    requestAnimationFrame(animateCursor);
+                }
+                animateCursor();
+
+                const hoverElements = document.querySelectorAll('a, button, .btn-primary');
+                hoverElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+                });
+            } else {
+                cursor.style.display = 'none';
+            }
+
+            // Navbar scroll
+            const navbar = document.getElementById('navbar');
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY;
+                if (currentScroll > 80) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                lastScroll = currentScroll;
+            });
+
+            // Reveal on scroll
+            const reveals = document.querySelectorAll('.reveal');
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: '0px 0px -80px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            reveals.forEach(el => observer.observe(el));
+
+            // Mobile menu
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const spans = menuToggle.querySelectorAll('span');
+                if (navLinks.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+
+            // Close mobile menu on link click
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    const spans = menuToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                });
+            });
+
+            // Smooth scroll para links internos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
